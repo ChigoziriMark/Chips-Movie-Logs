@@ -3,11 +3,11 @@ namespace ChipsMovieLogz.Models
 {
     public class Series
     {
-        private string _name = string.Empty;
-        public string Name
+        private string _title = string.Empty;
+        public string Title
         {
-            get { return _name; }
-            set { _name = value ?? string.Empty; }
+            get { return _title; }
+            set { _title = value ?? string.Empty; }
         }
 
         private string _genre = string.Empty;

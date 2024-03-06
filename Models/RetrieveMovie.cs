@@ -14,7 +14,7 @@ namespace ChipsMovieLogz.Models
             connectionString = dbConnectionString;
         }
 
-        public List<Movie> GetSyncedMovies(string title, string genre, DateTime releaseDate, string about, int imdbRating, int motionPictureRating, int metaScore, string director, string writer, int runtime, string topCast)
+        public List<Movie> GetSyncedMovies(string title, string genre)
         {
             List<Movie> movies = new List<Movie>();
 
@@ -28,12 +28,6 @@ namespace ChipsMovieLogz.Models
 
             if (!string.IsNullOrEmpty(genre))
                 conditions.Add("Genre = @Genre");
-
-            if (releaseDate != DateTime.MinValue)
-                conditions.Add("ReleaseDate = @ReleaseDate");
-
-            if (!string.IsNullOrEmpty(about))
-                conditions.Add("About = @About");
 
             // Add other conditions for the remaining parameters
 
@@ -51,12 +45,6 @@ namespace ChipsMovieLogz.Models
 
                     if (!string.IsNullOrEmpty(genre))
                         command.Parameters.AddWithValue("@Genre", genre);
-
-                    if (releaseDate != DateTime.MinValue)
-                        command.Parameters.AddWithValue("@ReleaseDate", releaseDate);
-
-                    if (!string.IsNullOrEmpty(about))
-                        command.Parameters.AddWithValue("@About", about);
 
                     // Set parameters for the remaining parameters
 

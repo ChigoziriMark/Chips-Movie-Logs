@@ -13,7 +13,7 @@ namespace ChipsMovieLogz.Models
             connectionString = dbConnectionString;
         }
 
-        public List<Actor> GetSyncedActors(string firstName, string lastName, int credits, string placeOfBirth, DateTime dateOfBirth, string gender, int age, string biography, string featuresIn, string productionCredit, string crewCredit, string writingCredit)
+        public List<Actor> GetSyncedActors(string firstName, string lastName)
         {
             List<Actor> actorsList = new List<Actor>();
 
@@ -27,15 +27,6 @@ namespace ChipsMovieLogz.Models
 
             if (!string.IsNullOrEmpty(lastName))
                 conditions.Add("LastName = @LastName");
-
-            if (credits > 0)
-                conditions.Add("Credits = @Credits");
-
-            if (!string.IsNullOrEmpty(placeOfBirth))
-                conditions.Add("PlaceOfBirth = @PlaceOfBirth");
-
-            if (dateOfBirth != DateTime.MinValue)
-                conditions.Add("DateOfBirth = @DateOfBirth");
 
             // Add other conditions for the remaining parameters
 
@@ -53,15 +44,6 @@ namespace ChipsMovieLogz.Models
 
                     if (!string.IsNullOrEmpty(lastName))
                         command.Parameters.AddWithValue("@LastName", lastName);
-
-                    if (credits > 0)
-                        command.Parameters.AddWithValue("@Credits", credits);
-
-                    if (!string.IsNullOrEmpty(placeOfBirth))
-                        command.Parameters.AddWithValue("@PlaceOfBirth", placeOfBirth);
-
-                    if (dateOfBirth != DateTime.MinValue)
-                        command.Parameters.AddWithValue("@DateOfBirth", dateOfBirth);
 
                     // Set parameters for the remaining parameters
 

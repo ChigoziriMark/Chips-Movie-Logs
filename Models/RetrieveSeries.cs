@@ -13,7 +13,7 @@ namespace ChipsMovieLogz.Models
             connectionString = dbConnectionString;
         }
 
-        public List<Series> GetSyncedSeries(string name, string genre, DateTime premierDate, string about, int imdbRating, string certification, int runtime, string director, string writer, string topCast, int episodes)
+        public List<Series> GetSyncedSeries(string title, string genre)
         {
             List<Series> seriesList = new List<Series>();
 
@@ -22,17 +22,12 @@ namespace ChipsMovieLogz.Models
             List<string> conditions = new List<string>();
 
             // Add conditions for each parameter that is not null or empty
-            if (!string.IsNullOrEmpty(name))
-                conditions.Add("Name = @Name");
+            if (!string.IsNullOrEmpty(title))
+                conditions.Add("Name = @Title");
 
             if (!string.IsNullOrEmpty(genre))
                 conditions.Add("Genre = @Genre");
 
-            if (premierDate != DateTime.MinValue)
-                conditions.Add("PremierDate = @PremierDate");
-
-            if (!string.IsNullOrEmpty(about))
-                conditions.Add("About = @About");
 
             // Add other conditions for the remaining parameters
 
@@ -45,17 +40,12 @@ namespace ChipsMovieLogz.Models
                 using (SqlCommand command = new SqlCommand(sqlQuery, connection))
                 {
                     // Set parameters based on provided values
-                    if (!string.IsNullOrEmpty(name))
-                        command.Parameters.AddWithValue("@Name", name);
+                    if (!string.IsNullOrEmpty(title))
+                        command.Parameters.AddWithValue("@Title", title);
 
                     if (!string.IsNullOrEmpty(genre))
                         command.Parameters.AddWithValue("@Genre", genre);
 
-                    if (premierDate != DateTime.MinValue)
-                        command.Parameters.AddWithValue("@PremierDate", premierDate);
-
-                    if (!string.IsNullOrEmpty(about))
-                        command.Parameters.AddWithValue("@About", about);
 
                     // Set parameters for the remaining parameters
 
@@ -66,7 +56,7 @@ namespace ChipsMovieLogz.Models
                             Series series = new Series
                             {
                                 // Map columns from the database to properties of the Series object
-                                Name = reader["Name"].ToString(),
+                                Title = reader["Name"].ToString(),
                                 Genre = reader["Genre"].ToString(),
                                 PremierDate = DateTime.Parse(reader["PremierDate"].ToString()),
                                 About = reader["About"].ToString(),
