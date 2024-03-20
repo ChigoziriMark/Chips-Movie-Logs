@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using System;
 using System.Data.SqlClient;
+using MongoDB.Driver.Core.Configuration;
 
 namespace ChipsMovieLogz.Models
 {
     public class Moviemaker
     {
-        public List<Movie> GetSyncedMovies(string title, string genre, DateTime releaseDate, string about, int imdbRating, int motionPictureRating, int metaScore, string director, string writer, int runtime, string topCast)
+        public List<Movie> GetSyncedMovies(string title, string genre)
         {
             List<Movie> movies = new List<Movie>();
 
@@ -21,18 +22,13 @@ namespace ChipsMovieLogz.Models
             if (!string.IsNullOrEmpty(genre))
                 conditions.Add("Genre = @Genre");
 
-            if (releaseDate != DateTime.MinValue)
-                conditions.Add("ReleaseDate = @ReleaseDate");
-
-            if (!string.IsNullOrEmpty(about))
-                conditions.Add("About = @About");
 
             // Add other conditions for the remaining parameters
 
             // Combine conditions with "AND" and build the full SQL query
             sqlQuery += string.Join(" AND ", conditions);
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand(sqlQuery, connection))
@@ -44,11 +40,6 @@ namespace ChipsMovieLogz.Models
                     if (!string.IsNullOrEmpty(genre))
                         command.Parameters.AddWithValue("@Genre", genre);
 
-                    if (releaseDate != DateTime.MinValue)
-                        command.Parameters.AddWithValue("@ReleaseDate", releaseDate);
-
-                    if (!string.IsNullOrEmpty(about))
-                        command.Parameters.AddWithValue("@About", about);
 
                     // Set parameters for the remaining parameters
 
