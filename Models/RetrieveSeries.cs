@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.Data.OleDb;
 
 namespace ChipsMovieLogz.Models
 {
@@ -12,6 +12,7 @@ namespace ChipsMovieLogz.Models
         {
             connectionString = dbConnectionString;
         }
+
 
         public List<Series> GetSyncedSeries(string title, string genre)
         {
@@ -34,10 +35,10 @@ namespace ChipsMovieLogz.Models
             // Combine conditions with "AND" and build the full SQL query
             sqlQuery += string.Join(" AND ", conditions);
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (OleDbConnection connection = new OleDbConnection(connectionString))
             {
                 connection.Open();
-                using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                using (OleDbCommand command = new OleDbCommand(sqlQuery, connection))
                 {
                     // Set parameters based on provided values
                     if (!string.IsNullOrEmpty(title))
@@ -49,7 +50,7 @@ namespace ChipsMovieLogz.Models
 
                     // Set parameters for the remaining parameters
 
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    using (OleDbDataReader reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {

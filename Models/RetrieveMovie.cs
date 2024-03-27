@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.Data.OleDb;
 
 
 namespace ChipsMovieLogz.Models
@@ -19,7 +19,7 @@ namespace ChipsMovieLogz.Models
             List<Movie> movies = new List<Movie>();
 
             // Define the SQL query to retrieve movies based on the provided criteria
-            string sqlQuery = "SELECT * FROM Movies WHERE ";
+            string sqlQuery = "SELECT * FROM Movie WHERE ";
             List<string> conditions = new List<string>();
 
             // Add conditions for each parameter that is not null or empty
@@ -34,10 +34,10 @@ namespace ChipsMovieLogz.Models
             // Combine conditions with "AND" and build the full SQL query
             sqlQuery += string.Join(" AND ", conditions);
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (OleDbConnection connection = new OleDbConnection(connectionString))
             {
                 connection.Open();
-                using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                using (OleDbCommand command = new OleDbCommand(sqlQuery, connection))
                 {
                     // Set parameters based on provided values
                     if (!string.IsNullOrEmpty(title))
@@ -48,7 +48,7 @@ namespace ChipsMovieLogz.Models
 
                     // Set parameters for the remaining parameters
 
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    using (OleDbDataReader reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
